@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Eyes</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: "Bebas Neue", cursive;
+            background: #0c3b5a;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .eye {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: #fff;
+            margin: 0 20px;
+            border-radius: 50%;
+            box-shadow: 0 5px 45px rgba(0, 0, 0, 0.2), inset 0 0 15px #f5af19, inset 0 0 25px #f5af19;
+        }
+
+        .pupil {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #000;
+            border: 10px solid skyblue;
+            box-sizing: border-box;
+            transition: transform 0.1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="eye">
+            <div class="pupil"></div>
+        </div>
+        <div class="eye">
+            <div class="pupil"></div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector("body").addEventListener("mousemove", eyeball);
+
+        function eyeball(event) {
+            const eyes = document.querySelectorAll(".eye");
+
+            eyes.forEach(function(eye) {
+                // Get the position of the eye on the screen
+                const eyeRect = eye.getBoundingClientRect();
+                const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+                const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+                // Get the mouse position
+                const mouseX = event.pageX;
+                const mouseY = event.pageY;
+
+                // Calculate the angle between the mouse and the center of the eye
+                const angle = Math.atan2(mouseY - eyeCenterY, mouseX - eyeCenterX);
+                const rotate = angle * (180 / Math.PI) + 90; // To make it look smooth
+
+                // Get the pupil inside the eye and rotate it
+                const pupil = eye.querySelector(".pupil");
+
+                // Move the pupil based on the angle
+                const pupilDistance = 20; // Pupil movement distance
+                const pupilX = pupilDistance * Math.cos(angle);
+                const pupilY = pupilDistance * Math.sin(angle);
+
+                // Set pupil transform based on angle and movement distance
+                pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+            });
+        }
+    </script>
+</body>
+</html>
